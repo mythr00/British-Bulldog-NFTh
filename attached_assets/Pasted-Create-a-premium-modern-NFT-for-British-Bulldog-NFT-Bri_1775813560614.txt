@@ -1,0 +1,72 @@
+Create a premium, modern NFT for **British Bulldog NFT** — Britain's most iconic breed immortalised on Ethereum.  
+
+**Overall style**: Dark luxurious theme with deep navy blue, blood red, white and subtle Union Jack accents. Strong, loyal, brotherhood vibe. Bold modern typography, clean layout, high-contrast. Make it feel premium, patriotic and unbreakable. Fully mobile-responsive, fast-loading, dark mode by default. Include subtle bulldog paw print and British flag elements.
+
+**Hero Section (full-screen)**:  
+Big bold headline: “WELCOME TO BRITISH BULLDOG NFT”  
+Subheadline: “Britain's most iconic breed. Now immortalised on Ethereum.”  
+Background: dramatic glowing British Bulldog NFT artwork (use placeholder for now).  
+Tagline at bottom: “The breed that refused to die. Now building something that lasts forever.”
+
+**The Project Section**:  
+Title: “THE PROJECT”  
+Text:  
+British Bulldog NFT is a collection of 444 hand-crafted Bulldogs on Ethereum — each one a sworn member of a Brotherhood founded in 1555 with one unbreakable oath:  
+“No Dog Left Behind.”
+
+**Mint Details Section** (use cards or clean boxes):  
+Title: “MINT DETAILS”  
+- Blockchain: Ethereum  
+- Supply: 444  
+- OG Mint: FREE  
+- Royalties: 5%  
+- Mint Date: TBA  
+
+**Mission / Charity Section**:  
+Title: “THE MISSION”  
+Text:  
+Part of every sale funds homeless dog shelters across the UK.  
+On-chain. Transparent. Forever.  
+
+Three icons/columns:  
+UK Dog Shelters  
+Project Development  
+Community Treasury  
+
+**$BULLDOG Token Section** (highlight as “Coming Soon” with excitement):  
+Title: “$BULLDOG TOKEN — COMING SOON”  
+Text:  
+Holders of British Bulldog NFT will be first in line when the official $BULLDOG token launches.  
+Early holders. Early access. First to benefit. Always.  
+
+Benefits list:  
+- NFT holders get guaranteed allocation  
+- Exclusive airdrop for OG & WL holders  
+- Token holders shape the future of the Brotherhood  
+- Staking & rewards for long term holders  
+- The longer you hold, the more you earn  
+
+Closing line: “Your Bulldog NFT is not just art. It's your key to everything that comes next.”
+
+**Roadmap Section** (use a clean vertical timeline with phases):  
+Title: “ROADMAP”  
+- Phase 1 — Community Building  
+- Phase 2 — The Mint  
+- Phase 3 — Charity & Brotherhood  
+- Phase 4 — Episode 2 & Legacy  
+- Phase 5 — $BULLDOG Token Launch  
+
+**Sneak Peek Gallery Section** (very important):  
+Title: “NFT SNEAK PEEKS”  
+Create a beautiful grid/gallery where I can easily upload my NFT images later. Make it look premium with hover effects and zoom. Show 4–6 placeholder bulldog NFTs for now.
+
+**Community & Links Section**:  
+Title: “Join the Brotherhood”  
+Show the official links clearly:  
+X: https://x.com/britbulldogsnft  
+Discord: https://discord.gg/93bmwZZ9Z5  
+
+**Footer**:  
+Final tagline in big letters:  
+“Hold your Bulldog. Secure your future. No Dog Left Behind.”  
+Include copyright and “Built on Ethereum” small
