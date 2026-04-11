@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "-M4r8VfxcxFe7jzIEeSPd"
+uri = "file://bbulldog-website.tar.gz"
+type = "unspecified"
+title = "British Bulldog NFT - Website Code"
