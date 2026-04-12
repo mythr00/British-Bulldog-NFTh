@@ -242,11 +242,11 @@ export default function Home() {
                 <h2 className="font-serif text-3xl md:text-4xl font-bold text-white mb-8">THE RANKS</h2>
                 <div className="space-y-4">
                   {[
-                    { rank: "Initiate", type: "Common", supply: 200, color: "bg-zinc-600" },
-                    { rank: "Brother", type: "Uncommon", supply: 130, color: "bg-emerald-700" },
-                    { rank: "Elder", type: "Rare", supply: 70, color: "bg-blue-700" },
-                    { rank: "Founder", type: "Ultra Rare", supply: 39, color: "bg-purple-700" },
-                    { rank: "Grand Master", type: "Legendary", supply: 5, color: "bg-secondary" },
+                    { rank: "The Gentry", type: "Common", supply: 200, color: "bg-zinc-600" },
+                    { rank: "The Dandy Rebels", type: "Uncommon", supply: 130, color: "bg-emerald-700" },
+                    { rank: "The Ruffians", type: "Rare", supply: 70, color: "bg-blue-700" },
+                    { rank: "The Aristocrats", type: "Ultra Rare", supply: 39, color: "bg-purple-700" },
+                    { rank: "The Royals", type: "Legendary", supply: 5, color: "bg-secondary" },
                   ].map((tier, i) => (
                     <div key={i} className="flex items-center justify-between p-5 bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
                       <div className="flex items-center gap-4">
