@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { ChevronDown, Menu, X, Download, ShieldCheck, Sword, Flame, Dna, FileText } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,7 @@ const BASE_URL = import.meta.env.BASE_URL;
 
 const logoUrl = `${BASE_URL}images/logo.jpeg`;
 const whitepaperUrl = `${BASE_URL}docs/british-bulldogs-nft-whitepaper.pdf`;
+
 const sneakPeeks = [
   `${BASE_URL}images/sneak1.png`,
   `${BASE_URL}images/sneak2.png`,
@@ -22,10 +23,43 @@ export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
+  // Countdown state
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Countdown timer to April 21st 2026 4PM UTC (GTD mint start)
+  useEffect(() => {
+    const targetDate = new Date("2026-04-21T16:00:00Z").getTime();
+
+    const interval = setInterval(() => {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+
+      if (distance < 0) {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+        clearInterval(interval);
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      setTimeLeft({ days, hours, minutes, seconds });
+    }, 1000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const navLinks = [
@@ -47,7 +81,11 @@ export default function Home() {
       >
         <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group">
-            <img src={logoUrl} alt="British Bulldog NFT" className="w-10 h-10 rounded-sm border border-white/10 group-hover:border-primary transition-colors" />
+            <img
+              src={logoUrl}
+              alt="British Bulldog NFT"
+              className="w-10 h-10 rounded-sm border border-white/10 group-hover:border-primary transition-colors"
+            />
             <span className="font-serif font-bold text-xl tracking-wider text-white">BRITISH BULLDOG</span>
           </Link>
 
@@ -61,12 +99,20 @@ export default function Home() {
                 {link.name}
               </a>
             ))}
-            <Button
-              variant="outline"
-              className="font-display uppercase tracking-wider border-secondary text-secondary hover:bg-secondary hover:text-background"
+
+            {/* Updated Connect Wallet → OpenSea link */}
+            <a
+              href="https://opensea.io/britishbulldog"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              Connect Wallet
-            </Button>
+              <Button
+                variant="outline"
+                className="font-display uppercase tracking-wider border-secondary text-secondary hover:bg-secondary hover:text-background"
+              >
+                View on OpenSea
+              </Button>
+            </a>
           </nav>
 
           <button
@@ -94,21 +140,30 @@ export default function Home() {
                 {link.name}
               </a>
             ))}
-            <Button className="w-full bg-secondary text-background hover:bg-white font-display uppercase tracking-wider">
-              Connect Wallet
-            </Button>
+
+            {/* Updated Connect Wallet → OpenSea link (mobile) */}
+            <a
+              href="https://opensea.io/britishbulldog"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <Button className="w-full bg-secondary text-background hover:bg-white font-display uppercase tracking-wider">
+                View on OpenSea
+              </Button>
+            </a>
           </motion.div>
         )}
       </header>
 
       <main>
-        {/* HERO */}
+        {/* HERO - with new countdown */}
         <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
           <div className="absolute inset-0 z-0">
             <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/80 to-background z-10" />
-            <img 
-              src={sneakPeeks[0]} 
-              alt="Hero Background" 
+            <img
+              src={sneakPeeks[0]}
+              alt="Hero Background"
               className="w-full h-full object-cover opacity-20 blur-sm scale-105"
             />
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent" />
@@ -121,17 +176,24 @@ export default function Home() {
               transition={{ duration: 1, ease: "easeOut" }}
               className="mb-8"
             >
-              <img src={logoUrl} alt="Logo" className="w-32 h-32 md:w-48 md:h-48 rounded-sm shadow-2xl border border-white/10 mx-auto" />
+              <img
+                src={logoUrl}
+                alt="Logo"
+                className="w-32 h-32 md:w-48 md:h-48 rounded-sm shadow-2xl border border-white/10 mx-auto"
+              />
             </motion.div>
-            
+
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
               className="font-serif text-5xl md:text-7xl lg:text-8xl font-black text-white leading-tight mb-6 max-w-5xl"
             >
-              WELCOME TO <br/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-secondary via-white to-secondary">BRITISH BULLDOG</span> NFT
+              WELCOME TO <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-secondary via-white to-secondary">
+                BRITISH BULLDOG
+              </span>{" "}
+              NFT
             </motion.h1>
 
             <motion.p
@@ -142,31 +204,86 @@ export default function Home() {
             >
               Britain's most iconic breed. Now immortalised on Ethereum.
             </motion.p>
-            
+
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.5 }}
-              className="text-md md:text-lg text-primary font-sans font-semibold tracking-widest uppercase mb-12"
+              className="text-md md:text-lg text-primary font-sans font-semibold tracking-widest uppercase mb-8"
             >
-              The breed that refused to die. Now building something that lasts forever.
+              National Bulldog Day • April 21st 2026
             </motion.p>
 
+            {/* NEW COUNTDOWN */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
+              className="mb-12 w-full max-w-md mx-auto"
+            >
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-8 text-center backdrop-blur-xl shadow-2xl">
+                <p className="text-secondary font-display uppercase tracking-[2px] text-sm mb-3">
+                  🚀 MINT STARTS IN
+                </p>
+                <div className="grid grid-cols-4 gap-4">
+                  <div className="text-center">
+                    <div className="text-5xl font-mono font-bold text-white tabular-nums">
+                      {timeLeft.days}
+                    </div>
+                    <div className="text-xs text-white/50 mt-1 tracking-widest">DAYS</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-5xl font-mono font-bold text-white tabular-nums">
+                      {timeLeft.hours}
+                    </div>
+                    <div className="text-xs text-white/50 mt-1 tracking-widest">HOURS</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-5xl font-mono font-bold text-white tabular-nums">
+                      {timeLeft.minutes}
+                    </div>
+                    <div className="text-xs text-white/50 mt-1 tracking-widest">MIN</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-5xl font-mono font-bold text-white tabular-nums">
+                      {timeLeft.seconds}
+                    </div>
+                    <div className="text-xs text-white/50 mt-1 tracking-widest">SEC</div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.7 }}
               className="flex flex-col sm:flex-row gap-4"
             >
-              <Button size="lg" className="bg-primary hover:bg-red-800 text-white font-display uppercase tracking-widest px-10 py-6 text-lg h-auto rounded-none border border-primary shadow-[0_0_20px_rgba(139,0,0,0.4)]">
-                Mint Coming Soon
-              </Button>
-              <Button size="lg" variant="outline" className="border-secondary/50 text-secondary hover:bg-secondary/10 hover:text-secondary font-display uppercase tracking-widest px-10 py-6 text-lg h-auto rounded-none">
+              {/* Updated Mint button → OpenSea link */}
+              <a
+                href="https://opensea.io/britishbulldog"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button
+                  size="lg"
+                  className="bg-primary hover:bg-red-800 text-white font-display uppercase tracking-widest px-10 py-6 text-lg h-auto rounded-none border border-primary shadow-[0_0_20px_rgba(139,0,0,0.4)]"
+                >
+                  View Collection on OpenSea
+                </Button>
+              </a>
+
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-secondary/50 text-secondary hover:bg-secondary/10 hover:text-secondary font-display uppercase tracking-widest px-10 py-6 text-lg h-auto rounded-none"
+              >
                 Join Discord
               </Button>
             </motion.div>
           </div>
-          
+
           <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce z-10 opacity-50">
             <ChevronDown size={32} />
           </div>
@@ -178,7 +295,7 @@ export default function Home() {
             <h2 className="font-serif text-3xl md:text-5xl font-bold mb-8 text-white">THE BROTHERHOOD</h2>
             <div className="h-1 w-20 bg-primary mx-auto mb-10" />
             <p className="text-xl md:text-2xl text-white/70 font-light leading-relaxed">
-              British Bulldog NFT is a collection of 444 hand-crafted Bulldogs on Ethereum — each one a sworn member of a Brotherhood founded in 1555 with one unbreakable oath: 
+              British Bulldog NFT is a collection of 444 hand-crafted Bulldogs on Ethereum — each one a sworn member of a Brotherhood founded in 1555 with one unbreakable oath:{" "}
               <span className="block mt-6 text-2xl md:text-4xl font-serif text-secondary italic">"No Dog Left Behind."</span>
             </p>
           </div>
@@ -190,7 +307,11 @@ export default function Home() {
           <div className="container mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="order-2 lg:order-1 relative">
               <div className="absolute -inset-4 bg-primary/20 blur-2xl rounded-full" />
-              <img src={sneakPeeks[1]} alt="The Lore" className="relative z-10 w-full rounded-sm border border-white/10 grayscale hover:grayscale-0 transition-all duration-700" />
+              <img
+                src={sneakPeeks[1]}
+                alt="The Lore"
+                className="relative z-10 w-full rounded-sm border border-white/10 grayscale hover:grayscale-0 transition-all duration-700"
+              />
             </div>
             <div className="order-1 lg:order-2">
               <div className="flex items-center gap-4 mb-6">
@@ -198,7 +319,7 @@ export default function Home() {
                 <h2 className="font-serif text-4xl md:text-5xl font-bold text-white">THE LORE</h2>
               </div>
               <p className="text-lg text-white/70 mb-6 leading-relaxed">
-                In 1555, five bulldogs gathered in a candlelit tavern off Borough Market during a frozen London winter. They signed the founding oath in blood and stout. 
+                In 1555, five bulldogs gathered in a candlelit tavern off Borough Market during a frozen London winter. They signed the founding oath in blood and stout.
               </p>
               <p className="text-lg text-white/70 mb-6 leading-relaxed">
                 They recruited 439 more. 444 sworn members. They operated in the shadows, protecting their own, building wealth, and preserving the lineage.
@@ -210,11 +331,10 @@ export default function Home() {
           </div>
         </section>
 
-        {/* MINT DETAILS & RARITY */}
+        {/* MINT DETAILS & RARITY - FULLY UPDATED */}
         <section id="mint" className="py-24 bg-background relative">
           <div className="container mx-auto px-6 md:px-12">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-              
               {/* MINT DETAILS */}
               <div className="lg:col-span-5">
                 <h2 className="font-serif text-3xl md:text-4xl font-bold text-white mb-8">MINT DETAILS</h2>
@@ -227,13 +347,43 @@ export default function Home() {
                     { label: "Public Mint", value: "$7" },
                     { label: "Team Reserve", value: "22" },
                     { label: "Royalties", value: "5%" },
-                    { label: "Mint Date", value: "TBA", highlight: true },
+                    { label: "Mint Date", value: "April 21st 2026", highlight: true },
                   ].map((item, i) => (
-                    <div key={i} className="bg-white/5 border border-white/10 p-6 rounded-none hover:border-primary/50 transition-colors">
+                    <div
+                      key={i}
+                      className="bg-white/5 border border-white/10 p-6 rounded-none hover:border-primary/50 transition-colors"
+                    >
                       <p className="text-xs font-display uppercase tracking-widest text-white/50 mb-2">{item.label}</p>
-                      <p className={`text-xl font-bold ${item.highlight ? 'text-secondary' : 'text-white'}`}>{item.value}</p>
+                      <p className={`text-xl font-bold ${item.highlight ? "text-secondary" : "text-white"}`}>
+                        {item.value}
+                      </p>
                     </div>
                   ))}
+                </div>
+
+                {/* NEW MINT SCHEDULE SECTION */}
+                <div className="mt-12">
+                  <h3 className="font-serif text-2xl font-bold text-white mb-6 text-center">MINT SCHEDULE (UTC)</h3>
+                  <div className="grid grid-cols-3 gap-6">
+                    {/* GTD */}
+                    <div className="bg-white/5 border border-secondary/30 p-6 rounded-none text-center hover:border-secondary transition-colors">
+                      <div className="text-secondary font-bold mb-1">GTD</div>
+                      <div className="text-3xl font-mono font-bold text-white">4:00 PM</div>
+                      <div className="text-white/70 text-sm">— 5:00 PM —</div>
+                    </div>
+                    {/* WL */}
+                    <div className="bg-white/5 border border-white/10 p-6 rounded-none text-center hover:border-secondary transition-colors">
+                      <div className="text-secondary font-bold mb-1">WL</div>
+                      <div className="text-3xl font-mono font-bold text-white">5:00 PM</div>
+                      <div className="text-white/70 text-sm">— 7:00 PM —</div>
+                    </div>
+                    {/* Public */}
+                    <div className="bg-white/5 border border-white/10 p-6 rounded-none text-center hover:border-secondary transition-colors">
+                      <div className="text-secondary font-bold mb-1">PUBLIC</div>
+                      <div className="text-3xl font-mono font-bold text-white">7:00 PM</div>
+                      <div className="text-white/70 text-sm">— 10:00 PM —</div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -248,7 +398,10 @@ export default function Home() {
                     { rank: "The Aristocrats", type: "Ultra Rare", supply: 39, color: "bg-purple-700" },
                     { rank: "The Royals", type: "Legendary", supply: 5, color: "bg-secondary" },
                   ].map((tier, i) => (
-                    <div key={i} className="flex items-center justify-between p-5 bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
+                    <div
+                      key={i}
+                      className="flex items-center justify-between p-5 bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
+                    >
                       <div className="flex items-center gap-4">
                         <div className={`w-3 h-3 rounded-full ${tier.color} shadow-[0_0_10px_currentColor]`} />
                         <div>
@@ -268,24 +421,27 @@ export default function Home() {
           </div>
         </section>
 
-        {/* GALLERY */}
+        {/* GALLERY - unchanged */}
         <section className="py-24 bg-black/60 relative border-y border-white/5">
           <div className="container mx-auto px-6 md:px-12 mb-12 text-center">
             <h2 className="font-serif text-4xl font-bold text-white mb-4">THE ARCHIVES</h2>
             <p className="text-white/60 font-display uppercase tracking-widest">Sneak Peeks of the 444</p>
           </div>
-          
+
           <div className="flex overflow-hidden group">
-            <motion.div 
+            <motion.div
               animate={{ x: ["0%", "-50%"] }}
               transition={{ repeat: Infinity, ease: "linear", duration: 30 }}
               className="flex gap-6 px-6"
             >
               {[...sneakPeeks, ...sneakPeeks].map((src, i) => (
-                <div key={i} className="relative w-64 h-64 md:w-80 md:h-80 flex-shrink-0 overflow-hidden rounded-sm border border-white/10 group-hover:opacity-50 hover:!opacity-100 transition-opacity duration-300">
-                  <img 
-                    src={src} 
-                    alt={`Sneak Peek ${i}`} 
+                <div
+                  key={i}
+                  className="relative w-64 h-64 md:w-80 md:h-80 flex-shrink-0 overflow-hidden rounded-sm border border-white/10 group-hover:opacity-50 hover:!opacity-100 transition-opacity duration-300"
+                >
+                  <img
+                    src={src}
+                    alt={`Sneak Peek ${i}`}
                     className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end p-6">
@@ -297,21 +453,21 @@ export default function Home() {
           </div>
         </section>
 
-        {/* THE MISSION */}
+        {/* THE MISSION - unchanged */}
         <section id="mission" className="py-24 relative bg-background">
           <div className="container mx-auto px-6 md:px-12 text-center max-w-4xl">
             <ShieldCheck className="mx-auto text-primary mb-6" size={48} />
             <h2 className="font-serif text-4xl md:text-5xl font-bold text-white mb-8">THE MISSION</h2>
             <p className="text-xl text-white/80 font-light mb-12 leading-relaxed">
-              Part of every sale funds homeless dog shelters across the UK. <br/>
+              Part of every sale funds homeless dog shelters across the UK. <br />
               <span className="font-bold text-white">On-chain. Transparent. Forever.</span>
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {[
-                { title: "UK Dog Shelters", percent: "2%", icon: <ShieldCheck size={24}/> },
-                { title: "Project Dev", percent: "2%", icon: <Sword size={24}/> },
-                { title: "Community Treasury", percent: "1%", icon: <Dna size={24}/> },
+                { title: "UK Dog Shelters", percent: "2%", icon: <ShieldCheck size={24} /> },
+                { title: "Project Dev", percent: "2%", icon: <Sword size={24} /> },
+                { title: "Community Treasury", percent: "1%", icon: <Dna size={24} /> },
               ].map((pillar, i) => (
                 <div key={i} className="p-8 border border-white/10 bg-white/5 flex flex-col items-center">
                   <div className="text-secondary mb-4">{pillar.icon}</div>
@@ -323,10 +479,10 @@ export default function Home() {
           </div>
         </section>
 
-        {/* TOKEN */}
+        {/* TOKEN - unchanged */}
         <section id="token" className="py-24 bg-gradient-to-b from-black/40 to-background border-t border-white/5 relative overflow-hidden">
           <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1/2 h-full bg-primary/5 blur-[150px] rounded-full pointer-events-none" />
-          
+
           <div className="container mx-auto px-6 md:px-12 relative z-10">
             <div className="max-w-3xl">
               <div className="inline-block px-4 py-1 border border-secondary text-secondary text-xs font-display uppercase tracking-widest mb-6 rounded-full">
@@ -338,7 +494,7 @@ export default function Home() {
                   "NFT holders get guaranteed allocation",
                   "Exclusive airdrop for OG & WL holders",
                   "Token holders shape the future of the Brotherhood",
-                  "Staking & rewards for long-term holders"
+                  "Staking & rewards for long-term holders",
                 ].map((item, i) => (
                   <li key={i} className="flex items-center gap-4 text-lg text-white/80">
                     <div className="w-1.5 h-1.5 bg-secondary rounded-full" />
@@ -353,11 +509,11 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ROADMAP */}
+        {/* ROADMAP - unchanged */}
         <section id="roadmap" className="py-24 relative bg-background">
           <div className="container mx-auto px-6 md:px-12 max-w-4xl">
             <h2 className="font-serif text-4xl md:text-5xl font-bold text-white text-center mb-16">ROADMAP</h2>
-            
+
             <div className="space-y-12 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-primary before:via-white/20 before:to-transparent">
               {[
                 { phase: "Phase 1", title: "The Gathering", desc: "Community Building", status: "COMPLETE" },
@@ -367,11 +523,15 @@ export default function Home() {
                 { phase: "Phase 5", title: "The Legacy", desc: "Episode 2 & 3 Expansion.", status: "LOCKED" },
               ].map((item, i) => (
                 <div key={i} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-                  <div className={`flex items-center justify-center w-10 h-10 rounded-full border-4 border-background ${item.status === 'COMPLETE' ? 'bg-primary' : 'bg-zinc-800'} shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-[0_0_15px_rgba(0,0,0,0.5)] z-10`} />
+                  <div
+                    className={`flex items-center justify-center w-10 h-10 rounded-full border-4 border-background ${
+                      item.status === "COMPLETE" ? "bg-primary" : "bg-zinc-800"
+                    } shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-[0_0_15px_rgba(0,0,0,0.5)] z-10`}
+                  />
                   <div className="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] p-6 rounded-none border border-white/10 bg-white/5 hover:border-secondary/50 transition-colors">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-secondary font-display text-sm tracking-widest uppercase">{item.phase}</span>
-                      {item.status === 'COMPLETE' && <span className="text-xs bg-primary px-2 py-1 rounded text-white font-bold">✓</span>}
+                      {item.status === "COMPLETE" && <span className="text-xs bg-primary px-2 py-1 rounded text-white font-bold">✓</span>}
                     </div>
                     <h3 className="font-serif font-bold text-xl text-white mb-2">{item.title}</h3>
                     <p className="text-white/60 text-sm">{item.desc}</p>
@@ -382,7 +542,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* WHITEPAPER */}
+        {/* WHITEPAPER - unchanged */}
         <section className="py-24 bg-primary/10 border-y border-primary/20 relative">
           <div className="container mx-auto px-6 md:px-12 text-center max-w-3xl">
             <FileText className="mx-auto text-secondary mb-6" size={48} />
@@ -391,7 +551,10 @@ export default function Home() {
               Read the complete documentation detailing our charitable mission, tokenomics, and the long-term vision for the British Bulldog Brotherhood.
             </p>
             <a href={whitepaperUrl} target="_blank" rel="noreferrer">
-              <Button size="lg" className="bg-white text-primary hover:bg-secondary hover:text-background font-display uppercase tracking-widest px-8 py-6 rounded-none flex items-center gap-3">
+              <Button
+                size="lg"
+                className="bg-white text-primary hover:bg-secondary hover:text-background font-display uppercase tracking-widest px-8 py-6 rounded-none flex items-center gap-3"
+              >
                 <Download size={20} />
                 Download Whitepaper
               </Button>
@@ -400,25 +563,39 @@ export default function Home() {
         </section>
       </main>
 
-      {/* FOOTER */}
+      {/* FOOTER - unchanged */}
       <footer className="bg-black pt-24 pb-12 border-t border-white/10">
         <div className="container mx-auto px-6 md:px-12">
           <div className="flex flex-col items-center text-center mb-16">
             <img src={logoUrl} alt="Logo" className="w-20 h-20 mb-8 rounded-sm grayscale opacity-50" />
             <h2 className="font-serif text-2xl md:text-4xl font-bold text-white mb-6 max-w-2xl">
-              HOLD YOUR BULLDOG. <br/> SECURE YOUR FUTURE. <br/>
+              HOLD YOUR BULLDOG. <br /> SECURE YOUR FUTURE. <br />
               <span className="text-primary">NO DOG LEFT BEHIND.</span>
             </h2>
             <div className="flex items-center gap-6 mt-8">
-              <a href="https://x.com/britbulldogsnft" target="_blank" rel="noreferrer" className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-black transition-colors">
-                <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 22.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.008 5.918H5.078z"></path></svg>
+              <a
+                href="https://x.com/britbulldogsnft"
+                target="_blank"
+                rel="noreferrer"
+                className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-black transition-colors"
+              >
+                <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 22.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.008 5.918H5.078z" />
+                </svg>
               </a>
-              <a href="https://discord.gg/93bmwZZ9Z5" target="_blank" rel="noreferrer" className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-[#5865F2] hover:text-white transition-colors hover:border-[#5865F2]">
-                <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"></path></svg>
+              <a
+                href="https://discord.gg/93bmwZZ9Z5"
+                target="_blank"
+                rel="noreferrer"
+                className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-[#5865F2] hover:text-white transition-colors hover:border-[#5865F2]"
+              >
+                <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current">
+                  <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z" />
+                </svg>
               </a>
             </div>
           </div>
-          
+
           <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-white/10 text-white/40 text-sm font-display tracking-widest">
             <p>COPYRIGHT © 2025 BRITISH BULLDOGS NFT.</p>
             <p className="mt-2 md:mt-0">BUILT ON ETHEREUM.</p>
